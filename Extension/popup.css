@@ -1,0 +1,44 @@
+body {
+    width: 320px;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+    margin: 0;
+    padding: 15px;
+}
+
+h1 {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 15px;
+    color: #38bdf8;
+}
+
+#crypto-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.crypto-card {
+    background: #1e293b;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.crypto-card:hover {
+    transform: scale(1.03);
+    background: #334155;
+}
+
+.coin-name {
+    font-weight: bold;
+}
+
+.coin-price {
+    color: #22c55e;
+}
