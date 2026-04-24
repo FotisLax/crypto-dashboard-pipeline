@@ -24,7 +24,7 @@ CoinGecko API
 
 ### 1️⃣ Clone repository
 
-git clone https://github.com/YOUR_USERNAME/cryptopipeline.git
+git clone https://github.com/FotisLax/cryptopipeline.git
 cd cryptopipeline
 
 ### 2️⃣ Start everything
