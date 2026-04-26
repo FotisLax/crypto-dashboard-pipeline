@@ -1,6 +1,15 @@
 import requests
 import psycopg2
 import time
+import logging
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(message)s",
+)
+
+logger = logging.getLogger(__name__)
 
 DB_CONFIG = {
     "host": "postgres",   # VERY IMPORTANT
@@ -22,7 +31,7 @@ def fetch_data():
     response = requests.get(url, params=params)
     return response.json()
 
-
+#|Data insertion|
 def insert_data(coins):
     conn = psycopg2.connect(**DB_CONFIG)
     cursor = conn.cursor()
@@ -53,11 +62,11 @@ def insert_data(coins):
 
 while True:
     try:
-        print("Fetching data...")
+        logger.info("Fetching crypto data from CoinGecko...")
         data = fetch_data()
         insert_data(data)
-        print("Updated successfully!")
+        logger.info(f"Successfully fetched {len(data)} coins")
     except Exception as e:
-        print("Error:", e)
+        logger.error(f"Error while fetching data: {e}")
 
     time.sleep(15)
