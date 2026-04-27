@@ -29,7 +29,18 @@ def fetch_data():
     }
 
     response = requests.get(url, params=params)
-    return response.json()
+
+    if response.status_code != 200:
+        logger.error(f"CoinGecko error: {response.status_code} - {response.text}")
+        return []
+
+    data = response.json()
+
+    if not isinstance(data, list):
+        logger.error(f"Unexpected API response: {data}")
+        return []
+
+    return data
 
 #|Data insertion|
 def insert_data(coins):
@@ -54,6 +65,9 @@ def insert_data(coins):
             int(coin["market_cap"]),
             int(coin["total_volume"])
         ))
+    if not coins:
+        logger.warning("No data received, skipping insert.")
+        return
 
     conn.commit()
     cursor.close()

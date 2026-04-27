@@ -1,4 +1,4 @@
-version: "3.9"
+
 
 services:
   postgres:
@@ -15,7 +15,13 @@ services:
   api:
     build: .
     container_name: crypto_api
+    platform: linux/amd64
     restart: always
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 132
+      POSTGRES_DB: crypto_db
     depends_on:
       - postgres
     ports:
@@ -24,7 +30,13 @@ services:
   fetcher:
     build: .
     container_name: crypto_fetcher
+    platform: linux/amd64
     restart: always
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 132
+      POSTGRES_DB: crypto_db
     depends_on:
       - postgres
     command: python fetch_crypto.py

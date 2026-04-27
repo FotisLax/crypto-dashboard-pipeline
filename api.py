@@ -3,6 +3,7 @@ from flask_cors import CORS
 import psycopg2
 import pandas as pd
 import logging
+import os
 
 app= Flask(__name__)
 CORS(app)
@@ -16,10 +17,10 @@ logger = logging.getLogger(__name__)
 
 def get_data():
     conn=psycopg2.connect(
-        host="postgres",
-        database="crypto_db",
-        user="postgres",
-        password="132",
+        host=os.getenv("POSTGRES_HOST"),
+        database=os.getenv("POSTGRES_DB"),
+        user=os.getenv("POSTGRES_USER"),
+        password=os.getenv("POSTGRES_PASSWORD"),
         port="5432"
     )
 
