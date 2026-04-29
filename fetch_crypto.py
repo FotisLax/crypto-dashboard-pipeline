@@ -18,6 +18,25 @@ DB_CONFIG = {
     "password": "132"
 }
 
+def create_table():
+    conn = psycopg2.connect(**DB_CONFIG)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS crypto_prices (
+            id TEXT PRIMARY KEY,
+            symbol TEXT,
+            name TEXT,
+            current_price FLOAT,
+            market_cap BIGINT,
+            volume_24h BIGINT,
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
+    conn.commit()
+    cursor.close()
+    conn.close()
+
 def fetch_data():
     url = "https://api.coingecko.com/api/v3/coins/markets"
     params = {
@@ -73,6 +92,7 @@ def insert_data(coins):
     cursor.close()
     conn.close()
 
+create_table()
 
 while True:
     try:
@@ -83,4 +103,4 @@ while True:
     except Exception as e:
         logger.error(f"Error while fetching data: {e}")
 
-    time.sleep(15)
+    time.sleep(60)
