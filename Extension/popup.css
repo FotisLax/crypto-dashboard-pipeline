@@ -42,3 +42,29 @@ h1 {
 .coin-price {
     color: #22c55e;
 }
+
+.search-box {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+#searchInput {
+    flex: 1;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#searchBtn {
+    padding: 5px 10px;
+    border: none;
+    background: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#searchBtn:hover {
+    background: #45a049;
+}

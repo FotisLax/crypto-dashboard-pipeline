@@ -1,20 +1,10 @@
 async function loadData() {
     try {
         const response = await fetch("http://127.0.0.1:5000/crypto");
-
-        console.log("Status:", response.status);
-
-        const text = await response.text();
-        console.log("Raw response:", text);
-
-        const data = JSON.parse(text);
-
-        console.log("Parsed data:", data);
-
+        const data = await response.json();
         displayData(data);
-
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Error loading top coins:", error);
     }
 }
 
@@ -29,7 +19,9 @@ function displayData(data) {
         div.innerHTML = `
             <div>
                 <div class="coin-name">${coin.name}</div>
-                <div style="font-size:12px; color:gray;">${coin.symbol.toUpperCase()}</div>
+                <div style="font-size:12px; color:gray;">
+                    ${coin.symbol.toUpperCase()}
+                </div>
             </div>
             <div class="coin-price">
                 $${Number(coin.current_price).toLocaleString()}
@@ -39,6 +31,52 @@ function displayData(data) {
         container.appendChild(div);
     });
 }
+
+
+async function searchCoin() {
+    const coin = document.getElementById("searchInput").value.trim();
+    const resultDiv = document.getElementById("searchResult");
+
+    if (!coin) return;
+
+    resultDiv.innerHTML = `<p>Loading...</p>`;
+
+    try {
+        const response = await fetch(`http://127.0.0.1:5000/search/${coin}`);
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+            resultDiv.innerHTML = `<p style="color:red;">Coin not found</p>`;
+            return;
+        }
+
+        resultDiv.innerHTML = `
+            <div class="crypto-card">
+                <div>
+                    <div class="coin-name">${data.name}</div>
+                    <div style="font-size:12px; color:gray;">
+                        ${data.symbol.toUpperCase()}
+                    </div>
+                </div>
+                <div class="coin-price">
+                    $${Number(data.current_price).toLocaleString()}
+                </div>
+            </div>
+        `;
+    } catch (error) {
+        resultDiv.innerHTML = `<p style="color:red;">Server error</p>`;
+    }
+}
+
+
+document.getElementById("searchBtn").addEventListener("click", searchCoin);
+
+document.getElementById("searchInput").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        searchCoin();
+    }
+});
+
 
 loadData();
 setInterval(loadData, 15000);
